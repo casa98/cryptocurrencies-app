@@ -1,4 +1,4 @@
-package com.casa98.currencies.ui.theme
+package com.casa98.currencies.presentation.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
