@@ -1,9 +1,7 @@
 package com.casa98.currencies.domain.use_case.get_coin
 
 import com.casa98.currencies.common.Resource
-import com.casa98.currencies.data.remote.dto.toCoin
 import com.casa98.currencies.data.remote.dto.toCoinDetail
-import com.casa98.currencies.domain.model.Coin
 import com.casa98.currencies.domain.model.CoinDetail
 import com.casa98.currencies.domain.respository.CoinRepository
 import kotlinx.coroutines.flow.Flow
