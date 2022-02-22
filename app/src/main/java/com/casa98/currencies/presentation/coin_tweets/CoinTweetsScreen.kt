@@ -1,48 +1,44 @@
-package com.casa98.currencies.presentation.coin_list
+package com.casa98.currencies.presentation.coin_tweets
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.casa98.currencies.presentation.Screen
-import com.casa98.currencies.presentation.coin_list.components.CoinListItem
 
 @Composable
-fun CoinListScreen(
-    navController: NavController,
-    viewModel: CoinListViewModel = hiltViewModel()
+fun CoinTweetsScreen(
+    onPopBackStack: () -> Unit,
+    viewModel: CoinTweetsViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = "Coins")
+                    Text(
+                        text = "${viewModel.appBarTitle.value} Tweets"
+                    )
                 },
+                navigationIcon = {
+                    IconButton(onClick = onPopBackStack) {
+                        Icon(Icons.Filled.ArrowBack, "Back button")
+                    }
+                }
             )
         }
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(state.coins) { coin ->
-                CoinListItem(
-                    coin = coin,
-                    onItemClick = {
-                        navController.navigate("${Screen.CoinDetailScreen.route}/${coin.id}")
-                    }
-                )
-            }
+
+        Box(modifier = Modifier.fillMaxSize()) {
+            Text(text = "${state.coinTweets.size} tweets for ${viewModel.appBarTitle.value}")
         }
 
         // If it's still loading:

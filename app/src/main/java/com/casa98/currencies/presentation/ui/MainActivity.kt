@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.casa98.currencies.presentation.Screen
 import com.casa98.currencies.presentation.coin_detail.CoinDetailScreen
 import com.casa98.currencies.presentation.coin_list.CoinListScreen
+import com.casa98.currencies.presentation.coin_tweets.CoinTweetsScreen
 import com.casa98.currencies.presentation.ui.theme.CurrenciesTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,6 +45,13 @@ class MainActivity : ComponentActivity() {
                             route = "${Screen.CoinDetailScreen.route}/{coinId}",
                         ) {
                             CoinDetailScreen(navController = navController)
+                        }
+                        composable(
+                            route = "${Screen.CoinTweetsScreen.route}/{coinId}",
+                        ) {
+                            CoinTweetsScreen(onPopBackStack = {
+                                navController.popBackStack()
+                            })
                         }
                     }
                 }

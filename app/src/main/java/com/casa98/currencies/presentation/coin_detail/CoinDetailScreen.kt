@@ -1,26 +1,25 @@
 package com.casa98.currencies.presentation.coin_detail
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.casa98.currencies.data.remote.dto.TeamMember
 import com.casa98.currencies.presentation.Screen
 import com.casa98.currencies.presentation.coin_detail.components.CoinTag
 import com.casa98.currencies.presentation.coin_detail.components.TeamListItem
-import com.casa98.currencies.presentation.coin_list.components.CoinListItem
 import com.google.accompanist.flowlayout.FlowRow
 
 @Composable
@@ -29,7 +28,23 @@ fun CoinDetailScreen(
     viewModel: CoinDetailViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-    Box(modifier = Modifier.fillMaxSize()) {
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = state.coin?.name ?: "Coin Details")
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.popBackStack()
+                    }) {
+                        Icon(Icons.Filled.ArrowBack, "Back button")
+                    }
+                }
+            )
+        }
+    ) {
         state.coin?.let { coin ->
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -41,7 +56,7 @@ fun CoinDetailScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Text(
-                            text = "${coin.rank} ${coin.name} (${coin.symbol})",
+                            text = "${coin.rank}. ${coin.name} (${coin.symbol})",
                             style = MaterialTheme.typography.h4,
                             modifier = Modifier.weight(8f)
                         )
@@ -56,7 +71,20 @@ fun CoinDetailScreen(
                                 .weight(2f)
                         )
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "See Twitter updates for ${coin.name}",
+                        color = MaterialTheme.colors.primary,
+                        style = MaterialTheme.typography.body1.copy(
+                            textDecoration = TextDecoration.Underline,
+                        ),
+                        modifier = Modifier
+                            .clickable {
+                                navController.navigate("${Screen.CoinTweetsScreen.route}/${coin.coinId}")
+                            }
+                            .padding(8.dp)
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = coin.description,
                         style = MaterialTheme.typography.body2,
@@ -72,7 +100,7 @@ fun CoinDetailScreen(
                         crossAxisSpacing = 10.dp,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        coin.tags.forEach { tag ->
+                        coin.tags?.forEach { tag ->
                             CoinTag(tag = tag)
                         }
                     }
@@ -99,22 +127,26 @@ fun CoinDetailScreen(
 
         // If it's still loading:
         if(state.isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
+            Box(modifier = Modifier.fillMaxSize()) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
         }
 
         // If there are errors:
         if(state.error.isNotBlank()) {
-            Text(
-                text = state.error,
-                color = MaterialTheme.colors.error,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .align(Alignment.Center)
-            )
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text(
+                    text = state.error,
+                    color = MaterialTheme.colors.error,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .align(Alignment.Center)
+                )
+            }
         }
     }
 }
