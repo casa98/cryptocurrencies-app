@@ -20,6 +20,7 @@ import androidx.navigation.NavController
 import com.casa98.currencies.presentation.Screen
 import com.casa98.currencies.presentation.coin_detail.components.CoinTag
 import com.casa98.currencies.presentation.coin_detail.components.TeamListItem
+import com.casa98.currencies.presentation.components.SharedTopAppBar
 import com.google.accompanist.flowlayout.FlowRow
 
 @Composable
@@ -31,17 +32,9 @@ fun CoinDetailScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = state.coin?.name ?: "Coin Details")
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.popBackStack()
-                    }) {
-                        Icon(Icons.Filled.ArrowBack, "Back button")
-                    }
-                }
+            SharedTopAppBar(
+                title = state.coin?.name ?: "",
+                onTapLeadingIcon = { navController.popBackStack() }
             )
         }
     ) {

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.casa98.currencies.presentation.components.SharedTopAppBar
 
 @Composable
 fun CoinTweetsScreen(
@@ -22,17 +23,9 @@ fun CoinTweetsScreen(
     val state = viewModel.state.value
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "${viewModel.appBarTitle.value} Tweets"
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onPopBackStack) {
-                        Icon(Icons.Filled.ArrowBack, "Back button")
-                    }
-                }
+            SharedTopAppBar(
+                title = "${viewModel.appBarTitle.value} Tweets",
+                onTapLeadingIcon = onPopBackStack
             )
         }
     ) {
