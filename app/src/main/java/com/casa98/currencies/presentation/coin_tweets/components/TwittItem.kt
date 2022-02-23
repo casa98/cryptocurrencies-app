@@ -8,24 +8,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.casa98.currencies.common.extensions.toPresentationDate
 import com.casa98.currencies.data.remote.dto.CoinTweetDto
 import java.text.SimpleDateFormat
 import java.util.*
 
-@SuppressLint("SimpleDateFormat")
 @Composable
 fun TwittItem(
     twitt: CoinTweetDto
 ) {
-    val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
-    val todayDate = format.parse(SimpleDateFormat("yyyy-MM-dd'T'00:00:00'Z'").format(Date()))
-    val twittDate = format.parse(twitt.date)
-    val date = if(twittDate!!.before(todayDate)) {
-        SimpleDateFormat("MMM dd, yyyy").format(twittDate)
-    } else {
-        SimpleDateFormat("h:mm a").format(twittDate)
-    }
-
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -39,7 +30,7 @@ fun TwittItem(
                 color = MaterialTheme.colors.primary
             )
             Text(
-                text = date,
+                text = twitt.date.toPresentationDate(),
                 style = MaterialTheme.typography.body2
             )
         }
