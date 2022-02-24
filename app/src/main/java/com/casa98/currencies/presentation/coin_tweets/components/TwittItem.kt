@@ -1,7 +1,5 @@
 package com.casa98.currencies.presentation.coin_tweets.components
 
-import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -10,8 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.casa98.currencies.common.extensions.toPresentationDate
 import com.casa98.currencies.data.remote.dto.CoinTweetDto
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Composable
 fun TwittItem(

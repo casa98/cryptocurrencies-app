@@ -9,6 +9,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,6 +19,7 @@ import com.casa98.currencies.presentation.coin_detail.CoinDetailScreen
 import com.casa98.currencies.presentation.coin_list.CoinListScreen
 import com.casa98.currencies.presentation.coin_tweets.CoinTweetsScreen
 import com.casa98.currencies.presentation.ui.theme.CurrenciesTheme
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,6 +33,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    val systemUiController = rememberSystemUiController()
+                    // systemUiController.setStatusBarColor(Color.Transparent)
+
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,

@@ -1,13 +1,14 @@
 package com.casa98.currencies.presentation.coin_detail
 
+import android.util.Log
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,9 +21,10 @@ import androidx.navigation.NavController
 import com.casa98.currencies.presentation.Screen
 import com.casa98.currencies.presentation.coin_detail.components.CoinTag
 import com.casa98.currencies.presentation.coin_detail.components.TeamListItem
-import com.casa98.currencies.presentation.components.SharedTopAppBar
 import com.google.accompanist.flowlayout.FlowRow
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CoinDetailScreen(
     navController: NavController,
@@ -30,14 +32,19 @@ fun CoinDetailScreen(
 ) {
     val state = viewModel.state.value
 
-    Scaffold(
-        topBar = {
-            SharedTopAppBar(
-                title = state.coin?.name ?: "",
-                onTapLeadingIcon = { navController.popBackStack() }
-            )
+    val bottomState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+
+    val coroutineScope = rememberCoroutineScope()
+
+    ModalBottomSheetLayout(
+        sheetState = bottomState,
+        scrimColor = if (isSystemInDarkTheme()) MaterialTheme.colors.background.copy(alpha = 0.5f) else MaterialTheme.colors.onSurface.copy(alpha = 0.32f),
+        sheetContent = {
+            Box(Modifier.fillMaxWidth().height(200.dp)) {
+                Text(text = "Hello from sheet")
+            }
         }
-    ) {
+    ){
         state.coin?.let { coin ->
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -94,7 +101,11 @@ fun CoinDetailScreen(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         coin.tags?.forEach { tag ->
-                            CoinTag(tag = tag)
+                            CoinTag(tag = tag, onTagClicked = { selectedTag ->
+                                // TODO: Show BottomDialog here
+                                Log.i("BOTTOM", selectedTag)
+                                coroutineScope.launch { bottomState.show() }
+                            })
                         }
                     }
                     Spacer(modifier = Modifier.height(16.dp))
