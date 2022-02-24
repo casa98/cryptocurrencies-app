@@ -8,8 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.casa98.currencies.common.Constants
 import com.casa98.currencies.common.Resource
 import com.casa98.currencies.domain.use_case.get_coin.GetCoinUseCase
-import com.casa98.currencies.domain.use_case.get_coins.GetCoinsUseCase
-import com.casa98.currencies.presentation.coin_list.CoinListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -18,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CoinDetailViewModel @Inject constructor(
     private val getCoinUseCase: GetCoinUseCase,
-    savedStateHandle: SavedStateHandle      // To get navigation parameters
+    savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
     private val _state = mutableStateOf(CoinDetailState())

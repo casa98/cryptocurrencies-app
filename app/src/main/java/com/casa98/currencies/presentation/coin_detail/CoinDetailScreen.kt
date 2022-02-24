@@ -1,6 +1,5 @@
 package com.casa98.currencies.presentation.coin_detail
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -21,6 +20,8 @@ import androidx.navigation.NavController
 import com.casa98.currencies.presentation.Screen
 import com.casa98.currencies.presentation.coin_detail.components.CoinTag
 import com.casa98.currencies.presentation.coin_detail.components.TeamListItem
+import com.casa98.currencies.presentation.tag_info.TagInfoBottomSheet
+import com.casa98.currencies.presentation.tag_info.TagInfoViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.coroutines.launch
 
@@ -28,7 +29,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun CoinDetailScreen(
     navController: NavController,
-    viewModel: CoinDetailViewModel = hiltViewModel()
+    viewModel: CoinDetailViewModel = hiltViewModel(),
+    tagViewModel: TagInfoViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
 
@@ -39,11 +41,7 @@ fun CoinDetailScreen(
     ModalBottomSheetLayout(
         sheetState = bottomState,
         scrimColor = if (isSystemInDarkTheme()) MaterialTheme.colors.background.copy(alpha = 0.5f) else MaterialTheme.colors.onSurface.copy(alpha = 0.32f),
-        sheetContent = {
-            Box(Modifier.fillMaxWidth().height(200.dp)) {
-                Text(text = "Hello from sheet")
-            }
-        }
+        sheetContent = { TagInfoBottomSheet() }
     ){
         state.coin?.let { coin ->
             LazyColumn(
@@ -102,8 +100,7 @@ fun CoinDetailScreen(
                     ) {
                         coin.tags?.forEach { tag ->
                             CoinTag(tag = tag, onTagClicked = { selectedTag ->
-                                // TODO: Show BottomDialog here
-                                Log.i("BOTTOM", selectedTag)
+                                tagViewModel.saveSelectedTag(selectedTag)
                                 coroutineScope.launch { bottomState.show() }
                             })
                         }
